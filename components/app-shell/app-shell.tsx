@@ -1,4 +1,4 @@
-import { Wallet } from 'lucide-react'
+import { Flower } from 'lucide-react'
 import { SidebarNav } from '@/components/app-shell/sidebar-nav'
 import { MobileNav } from '@/components/app-shell/mobile-nav'
 import { ThemeToggle } from '@/components/app-shell/theme-toggle'
@@ -7,7 +7,7 @@ function Brand() {
   return (
     <div className="flex items-center gap-2.5">
       <span className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-        <Wallet className="size-5" aria-hidden="true" />
+        <Flower className="size-5" aria-hidden="true" />
       </span>
       <span className="text-base font-semibold tracking-tight">Bloom</span>
     </div>
