@@ -15,20 +15,20 @@ interface Task {
   category: 'Trabajo' | 'Estudio' | 'Personal'
   dueDate: string
   isRecurring: boolean
-  repeatDays: string[] // Días seleccionados (ej: ['Martes', 'Viernes'])
-  syncToAgenda: boolean // Sincronizado con la agenda personal
+  repeatDays: string[]
+  syncToAgenda: boolean
   subtasks: SubTask[]
   completed: boolean
 }
 
 export default function TareasPage() {
   const [tasks, setTasks] = useState<Task[]>([
-    { 
-      id: 1, 
-      title: 'Repasar boceto de Bloom', 
-      category: 'Estudio', 
-      dueDate: '2026-11-25', 
-      isRecurring: true, 
+    {
+      id: 1,
+      title: 'Repasar boceto de Bloom',
+      category: 'Estudio',
+      dueDate: '2026-11-25',
+      isRecurring: true,
       repeatDays: ['Jueves'],
       syncToAgenda: true,
       completed: false,
@@ -37,12 +37,12 @@ export default function TareasPage() {
         { id: 102, text: 'Revisar componentes de UI', completed: false }
       ]
     },
-    { 
-      id: 2, 
-      title: 'Organizar agenda semanal', 
-      category: 'Personal', 
-      dueDate: '2026-11-25', 
-      isRecurring: false, 
+    {
+      id: 2,
+      title: 'Organizar agenda semanal',
+      category: 'Personal',
+      dueDate: '2026-11-25',
+      isRecurring: false,
       repeatDays: [],
       syncToAgenda: true,
       completed: false,
@@ -54,15 +54,12 @@ export default function TareasPage() {
   ])
 
   const [isModalOpen, setIsModalOpen] = useState(false)
-  
-  // Estados del formulario
   const [newTitle, setNewTitle] = useState('')
   const [newCategory, setNewCategory] = useState<'Trabajo' | 'Estudio' | 'Personal'>('Trabajo')
   const [newDueDate, setNewDueDate] = useState('')
   const [isRecurring, setIsRecurring] = useState(false)
   const [selectedDays, setSelectedDays] = useState<string[]>([])
   const [syncToAgenda, setSyncToAgenda] = useState(true)
-  
   const [subtasksInput, setSubtasksInput] = useState<string[]>([''])
 
   const daysOfWeek = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
@@ -139,7 +136,7 @@ export default function TareasPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold tracking-tight">Módulo de Tareas 🌸</h1>
         <button 
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => setIsModalOpen(true)} 
           className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-xl text-sm font-medium hover:opacity-90 transition shadow-sm"
         >
           <Plus className="size-4" /> Nueva Tarea
@@ -156,7 +153,6 @@ export default function TareasPage() {
           <p className="text-3xl font-bold">{pendingCount} <span className="text-sm font-normal text-muted-foreground">pendientes</span></p>
           <p className="text-xs text-muted-foreground mt-2">Enfócate en lo principal de hoy ✨</p>
         </div>
-
         <div className="rounded-2xl border bg-card p-5 shadow-sm flex items-center justify-between">
           <div>
             <h2 className="font-semibold text-sm text-muted-foreground">Progreso Global</h2>
@@ -196,7 +192,6 @@ export default function TareasPage() {
             const completedSubs = task.subtasks.filter(s => s.completed).length
             const totalSubs = task.subtasks.length
             const progressPercentage = totalSubs > 0 ? Math.round((completedSubs / totalSubs) * 100) : 0
-
             return (
               <div key={task.id} className="p-4 rounded-xl border bg-background/50 space-y-3">
                 <div className="flex items-center justify-between">
@@ -220,16 +215,15 @@ export default function TareasPage() {
                     {progressPercentage}%
                   </span>
                 </div>
-
                 {task.subtasks.length > 0 && (
                   <div className="pl-2 space-y-1.5 pt-2 border-t border-border/50">
                     {task.subtasks.map((sub) => (
                       <label key={sub.id} className="flex items-center gap-2.5 text-xs cursor-pointer text-muted-foreground hover:text-foreground transition">
                         <input 
                           type="checkbox" 
-                          checked={sub.completed}
-                          onChange={() => toggleSubtask(task.id, sub.id)}
-                          className="size-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500 cursor-pointer"
+                          checked={sub.completed} 
+                          onChange={() => toggleSubtask(task.id, sub.id)} 
+                          className="size-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500 cursor-pointer" 
                         />
                         <span className={sub.completed ? 'line-through opacity-70' : ''}>{sub.text}</span>
                       </label>
@@ -252,54 +246,54 @@ export default function TareasPage() {
                 <X className="size-5" />
               </button>
             </div>
-
+            
             <form onSubmit={handleAddTask} className="space-y-4">
               <div>
                 <label className="text-xs font-medium text-muted-foreground block mb-1">Título de la tarea</label>
                 <input 
                   type="text" 
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
-                  placeholder="Ej. Revisar contrato..."
-                  className="w-full rounded-xl border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  autoFocus
-                  required
+                  value={newTitle} 
+                  onChange={(e) => setNewTitle(e.target.value)} 
+                  placeholder="Ej. Revisar contrato..." 
+                  className="w-full rounded-xl border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" 
+                  autoFocus 
+                  required 
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-             <div className="flex flex-wrap gap-2 pt-1">
-  {(['Trabajo', 'Estudio', 'Personal'] as const).map((cat) => {
-    const isSelected = newCategory === cat;
-    const colors: Record<string, string> = {
-      Trabajo: 'bg-blue-500/10 text-blue-600 border-blue-200',
-      Estudio: 'bg-purple-500/10 text-purple-600 border-purple-200',
-      Personal: 'bg-pink-500/10 text-pink-600 border-pink-200',
-    };
-    return (
-      <button
-        key={cat}
-        type="button"
-        onClick={() => setNewCategory(cat)}
-        className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition flex items-center gap-2 ${
-          isSelected 
-            ? 'bg-purple-600 text-white border-purple-600 shadow-sm' 
-            : 'bg-background hover:bg-muted text-muted-foreground'
-        }`}
-      >
-        <span className={`size-2 rounded-full ${cat === 'Trabajo' ? 'bg-blue-500' : cat === 'Estudio' ? 'bg-purple-500' : 'bg-pink-500'}`} />
-        {cat}
-      </button>
-    );
-  })}
-</div>
-                    type="date"
-                    value={newDueDate}
-                    onChange={(e) => setNewDueDate(e.target.value)}
-                    className="w-full rounded-xl border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  />
+              {/* Categoría con botones pastel estéticos */}
+              <div className="space-y-1">
+                <label className="text-xs font-medium text-muted-foreground block">Categoría</label>
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {(['Trabajo', 'Estudio', 'Personal'] as const).map((cat) => {
+                    const isSelected = newCategory === cat;
+                    return (
+                      <button
+                        key={cat}
+                        type="button"
+                        onClick={() => setNewCategory(cat)}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition flex items-center gap-2 ${
+                          isSelected 
+                            ? 'bg-purple-600 text-white border-purple-600 shadow-sm' 
+                            : 'bg-background hover:bg-muted text-muted-foreground'
+                        }`}
+                      >
+                        <span className={`size-2 rounded-full ${cat === 'Trabajo' ? 'bg-blue-500' : cat === 'Estudio' ? 'bg-purple-500' : 'bg-pink-500'}`} />
+                        {cat}
+                      </button>
+                    );
+                  })}
                 </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-medium text-muted-foreground block mb-1">Fecha límite</label>
+                <input 
+                  type="date" 
+                  value={newDueDate} 
+                  onChange={(e) => setNewDueDate(e.target.value)} 
+                  className="w-full rounded-xl border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" 
+                />
               </div>
 
               {/* Selección de Días Específicos de Repetición */}
@@ -307,15 +301,14 @@ export default function TareasPage() {
                 <label className="flex items-center gap-2 cursor-pointer text-sm">
                   <input 
                     type="checkbox" 
-                    checked={isRecurring}
-                    onChange={(e) => setIsRecurring(e.target.checked)}
-                    className="rounded border-gray-300 text-purple-600 focus:ring-purple-500 size-4"
+                    checked={isRecurring} 
+                    onChange={(e) => setIsRecurring(e.target.checked)} 
+                    className="rounded border-gray-300 text-purple-600 focus:ring-purple-500 size-4" 
                   />
                   <span className="font-medium text-xs text-muted-foreground flex items-center gap-1">
                     <Repeat className="size-3.5" /> ¿Repetir en días específicos?
                   </span>
                 </label>
-
                 {isRecurring && (
                   <div className="flex flex-wrap gap-1.5 pt-1">
                     {daysOfWeek.map((day) => {
@@ -344,9 +337,9 @@ export default function TareasPage() {
                 <label className="flex items-center gap-2 cursor-pointer text-sm">
                   <input 
                     type="checkbox" 
-                    checked={syncToAgenda}
-                    onChange={(e) => setSyncToAgenda(e.target.checked)}
-                    className="rounded border-gray-300 text-purple-600 focus:ring-purple-500 size-4"
+                    checked={syncToAgenda} 
+                    onChange={(e) => setSyncToAgenda(e.target.checked)} 
+                    className="rounded border-gray-300 text-purple-600 focus:ring-purple-500 size-4" 
                   />
                   <span className="font-medium text-xs text-muted-foreground">
                     📅 Sincronizar automáticamente con la Agenda Personal
@@ -360,17 +353,17 @@ export default function TareasPage() {
                 {subtasksInput.map((subText, index) => (
                   <div key={index} className="flex gap-2">
                     <input 
-                      type="text"
-                      value={subText}
-                      onChange={(e) => handleSubtaskInputChange(index, e.target.value)}
-                      placeholder={`Paso ${index + 1}`}
-                      className="w-full rounded-xl border bg-background px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      type="text" 
+                      value={subText} 
+                      onChange={(e) => handleSubtaskInputChange(index, e.target.value)} 
+                      placeholder={`Paso ${index + 1}`} 
+                      className="w-full rounded-xl border bg-background px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-purple-500" 
                     />
                   </div>
                 ))}
                 <button 
                   type="button" 
-                  onClick={handleAddSubtaskField}
+                  onClick={handleAddSubtaskField} 
                   className="text-xs text-purple-500 hover:underline font-medium pt-1 block"
                 >
                   + Añadir otro paso
@@ -380,7 +373,7 @@ export default function TareasPage() {
               <div className="flex justify-end gap-2 pt-2">
                 <button 
                   type="button" 
-                  onClick={() => setIsModalOpen(false)}
+                  onClick={() => setIsModalOpen(false)} 
                   className="px-4 py-2 rounded-xl text-sm font-medium border hover:bg-muted transition"
                 >
                   Cancelar
