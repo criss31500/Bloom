@@ -1,4 +1,4 @@
-'use-client'
+'use client'
 
 import { useState } from 'react'
 import { Calendar, Briefcase, BookOpen, Home, Plus, X } from 'lucide-react'
