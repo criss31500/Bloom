@@ -1,23 +1,22 @@
 'use client'
 
 import { useState } from 'react'
-import { Calendar as CalendarIcon, Briefcase, BookOpen, Home, Plus, X, Repeat, CheckSquare, Square } from 'lucide-react'
+import { Calendar as CalendarIcon, Briefcase, BookOpen, Home, Plus, X, Repeat, CheckSquare } from 'lucide-react'
 
-// Definimos la estructura de una Subtarea
 interface SubTask {
   id: number
   text: string
   completed: boolean
 }
 
-// Estructura de la Tarea principal con checklist y repetición
 interface Task {
   id: number
   title: string
   category: 'Trabajo' | 'Estudio' | 'Personal'
   dueDate: string
   isRecurring: boolean
-  recurrenceType?: 'Diaria' | 'Semanal'
+  repeatDays: string[] // Días seleccionados (ej: ['Martes', 'Viernes'])
+  syncToAgenda: boolean // Sincronizado con la agenda personal
   subtasks: SubTask[]
   completed: boolean
 }
@@ -30,7 +29,8 @@ export default function TareasPage() {
       category: 'Estudio', 
       dueDate: '2026-11-25', 
       isRecurring: true, 
-      recurrenceType: 'Semanal', 
+      repeatDays: ['Jueves'],
+      syncToAgenda: true,
       completed: false,
       subtasks: [
         { id: 101, text: 'Definir paleta de colores', completed: true },
@@ -43,6 +43,8 @@ export default function TareasPage() {
       category: 'Personal', 
       dueDate: '2026-11-25', 
       isRecurring: false, 
+      repeatDays: [],
+      syncToAgenda: true,
       completed: false,
       subtasks: [
         { id: 201, text: 'Anotar reuniones clave', completed: true },
@@ -58,10 +60,20 @@ export default function TareasPage() {
   const [newCategory, setNewCategory] = useState<'Trabajo' | 'Estudio' | 'Personal'>('Trabajo')
   const [newDueDate, setNewDueDate] = useState('')
   const [isRecurring, setIsRecurring] = useState(false)
-  const [recurrenceType, setRecurrenceType] = useState<'Diaria' | 'Semanal'>('Semanal')
+  const [selectedDays, setSelectedDays] = useState<string[]>([])
+  const [syncToAgenda, setSyncToAgenda] = useState(true)
   
-  // Estado para las subtareas temporales al crear
   const [subtasksInput, setSubtasksInput] = useState<string[]>([''])
+
+  const daysOfWeek = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+
+  const toggleDaySelection = (day: string) => {
+    if (selectedDays.includes(day)) {
+      setSelectedDays(selectedDays.filter(d => d !== day))
+    } else {
+      setSelectedDays([...selectedDays, day])
+    }
+  }
 
   const handleAddSubtaskField = () => {
     setSubtasksInput([...subtasksInput, ''])
@@ -73,7 +85,6 @@ export default function TareasPage() {
     setSubtasksInput(updated)
   }
 
-  // Alternar subtarea individual dentro de una tarea
   const toggleSubtask = (taskId: number, subId: number) => {
     setTasks(tasks.map(task => {
       if (task.id === taskId) {
@@ -104,7 +115,8 @@ export default function TareasPage() {
       category: newCategory,
       dueDate: newDueDate || 'Sin fecha',
       isRecurring,
-      recurrenceType: isRecurring ? recurrenceType : undefined,
+      repeatDays: isRecurring ? selectedDays : [],
+      syncToAgenda,
       subtasks: formattedSubtasks,
       completed: false
     }
@@ -113,6 +125,8 @@ export default function TareasPage() {
     setNewTitle('')
     setNewDueDate('')
     setIsRecurring(false)
+    setSelectedDays([])
+    setSyncToAgenda(true)
     setSubtasksInput([''])
     setIsModalOpen(false)
   }
@@ -121,7 +135,7 @@ export default function TareasPage() {
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto relative">
-      {/* Título de la sección */}
+      {/* Título */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold tracking-tight">Módulo de Tareas 🌸</h1>
         <button 
@@ -174,7 +188,7 @@ export default function TareasPage() {
         </div>
       </div>
 
-      {/* Detalle de Tareas con Checklists internos */}
+      {/* Detalle de Tareas */}
       <div className="rounded-2xl border bg-card p-6 shadow-sm space-y-6">
         <h2 className="font-semibold text-lg">Detalle de Tareas</h2>
         <div className="space-y-4">
@@ -188,9 +202,18 @@ export default function TareasPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-semibold text-sm">{task.title}</p>
-                    <p className="text-xs text-muted-foreground flex items-center gap-2 mt-0.5">
+                    <p className="text-xs text-muted-foreground flex items-center gap-2 mt-0.5 flex-wrap">
                       <span>📅 {task.dueDate}</span> • <span>{task.category}</span>
-                      {task.isRecurring && <span className="flex items-center gap-1 text-purple-500"><Repeat className="size-3" /> {task.recurrenceType}</span>}
+                      {task.isRecurring && task.repeatDays.length > 0 && (
+                        <span className="flex items-center gap-1 text-purple-500 font-medium">
+                          <Repeat className="size-3" /> Repite: {task.repeatDays.join(', ')}
+                        </span>
+                      )}
+                      {task.syncToAgenda && (
+                        <span className="bg-blue-500/10 text-blue-500 px-2 py-0.5 rounded text-[10px] font-semibold">
+                          📅 En Agenda Personal
+                        </span>
+                      )}
                     </p>
                   </div>
                   <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-purple-50 text-purple-600 dark:bg-purple-950/40">
@@ -198,7 +221,6 @@ export default function TareasPage() {
                   </span>
                 </div>
 
-                {/* Lista de Subtareas (Checks internos) */}
                 {task.subtasks.length > 0 && (
                   <div className="pl-2 space-y-1.5 pt-2 border-t border-border/50">
                     {task.subtasks.map((sub) => (
@@ -220,7 +242,7 @@ export default function TareasPage() {
         </div>
       </div>
 
-      {/* Modal / Formulario con soporte para Subtareas */}
+      {/* Modal / Formulario Mejorado */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-card border rounded-2xl p-6 w-full max-w-md shadow-xl space-y-4 relative animate-in fade-in zoom-in-95 max-h-[90vh] overflow-y-auto">
@@ -270,7 +292,59 @@ export default function TareasPage() {
                 </div>
               </div>
 
-              {/* Subtareas Dinámicas */}
+              {/* Selección de Días Específicos de Repetición */}
+              <div className="space-y-2 pt-2 border-t">
+                <label className="flex items-center gap-2 cursor-pointer text-sm">
+                  <input 
+                    type="checkbox" 
+                    checked={isRecurring}
+                    onChange={(e) => setIsRecurring(e.target.checked)}
+                    className="rounded border-gray-300 text-purple-600 focus:ring-purple-500 size-4"
+                  />
+                  <span className="font-medium text-xs text-muted-foreground flex items-center gap-1">
+                    <Repeat className="size-3.5" /> ¿Repetir en días específicos?
+                  </span>
+                </label>
+
+                {isRecurring && (
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    {daysOfWeek.map((day) => {
+                      const isSelected = selectedDays.includes(day)
+                      return (
+                        <button
+                          key={day}
+                          type="button"
+                          onClick={() => toggleDaySelection(day)}
+                          className={`px-2.5 py-1 rounded-lg text-xs font-medium transition ${
+                            isSelected 
+                              ? 'bg-purple-500 text-white shadow-sm' 
+                              : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                          }`}
+                        >
+                          {day.slice(0, 3)}
+                        </button>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Opción de Sincronización con Agenda Personal */}
+              <div className="pt-2 border-t">
+                <label className="flex items-center gap-2 cursor-pointer text-sm">
+                  <input 
+                    type="checkbox" 
+                    checked={syncToAgenda}
+                    onChange={(e) => setSyncToAgenda(e.target.checked)}
+                    className="rounded border-gray-300 text-purple-600 focus:ring-purple-500 size-4"
+                  />
+                  <span className="font-medium text-xs text-muted-foreground">
+                    📅 Sincronizar automáticamente con la Agenda Personal
+                  </span>
+                </label>
+              </div>
+
+              {/* Subtareas */}
               <div className="space-y-2 pt-2 border-t">
                 <label className="text-xs font-medium text-muted-foreground block">Pasos o Checks para completar</label>
                 {subtasksInput.map((subText, index) => (
@@ -291,32 +365,6 @@ export default function TareasPage() {
                 >
                   + Añadir otro paso
                 </button>
-              </div>
-
-              {/* Repetición */}
-              <div className="space-y-2 pt-2 border-t">
-                <label className="flex items-center gap-2 cursor-pointer text-sm">
-                  <input 
-                    type="checkbox" 
-                    checked={isRecurring}
-                    onChange={(e) => setIsRecurring(e.target.checked)}
-                    className="rounded border-gray-300 text-purple-600 focus:ring-purple-500 size-4"
-                  />
-                  <span className="font-medium text-xs text-muted-foreground flex items-center gap-1">
-                    <Repeat className="size-3.5" /> ¿Es una tarea repetitiva?
-                  </span>
-                </label>
-
-                {isRecurring && (
-                  <select 
-                    value={recurrenceType}
-                    onChange={(e) => setRecurrenceType(e.target.value as any)}
-                    className="w-full rounded-xl border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  >
-                    <option value="Diaria">Repetir Diariamente</option>
-                    <option value="Semanal">Repetir Semanalmente</option>
-                  </select>
-                )}
               </div>
 
               <div className="flex justify-end gap-2 pt-2">
