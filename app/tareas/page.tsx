@@ -269,16 +269,11 @@ export default function TareasPage() {
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="text-xs font-medium text-muted-foreground block mb-1">Categoría</label>
-                  <select 
-                    value={newCategory}
-                    onChange={(e) => setNewCategory(e.target.value as any)}
-                    className="w-full rounded-xl border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  >
-                    <option value="Trabajo">Trabajo</option>
-                    <option value="Estudio">Estudio</option>
-                    <option value="Personal">Personal</option>
-                  </select>
+                 <select value={newCategory} onChange={(e) => setNewCategory(e.target.value as any)} className="w-full rounded-xl border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" >
+  <option value="Trabajo">Trabajo</option>
+  <option value="Estudio">Estudio</option>
+  <option value="Personal">Personal</option>
+</select>
                 </div>
 
                 <div>
