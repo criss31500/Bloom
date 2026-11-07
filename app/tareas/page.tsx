@@ -269,16 +269,31 @@ export default function TareasPage() {
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                 <select value={newCategory} onChange={(e) => setNewCategory(e.target.value as any)} className="w-full rounded-xl border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" >
-  <option value="Trabajo">Trabajo</option>
-  <option value="Estudio">Estudio</option>
-  <option value="Personal">Personal</option>
-</select>
-                </div>
-
-                <div>
-                  <label className="text-xs font-medium text-muted-foreground block mb-1">Fecha límite</label>
-                  <input 
+             <div className="flex flex-wrap gap-2 pt-1">
+  {(['Trabajo', 'Estudio', 'Personal'] as const).map((cat) => {
+    const isSelected = newCategory === cat;
+    const colors: Record<string, string> = {
+      Trabajo: 'bg-blue-500/10 text-blue-600 border-blue-200',
+      Estudio: 'bg-purple-500/10 text-purple-600 border-purple-200',
+      Personal: 'bg-pink-500/10 text-pink-600 border-pink-200',
+    };
+    return (
+      <button
+        key={cat}
+        type="button"
+        onClick={() => setNewCategory(cat)}
+        className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition flex items-center gap-2 ${
+          isSelected 
+            ? 'bg-purple-600 text-white border-purple-600 shadow-sm' 
+            : 'bg-background hover:bg-muted text-muted-foreground'
+        }`}
+      >
+        <span className={`size-2 rounded-full ${cat === 'Trabajo' ? 'bg-blue-500' : cat === 'Estudio' ? 'bg-purple-500' : 'bg-pink-500'}`} />
+        {cat}
+      </button>
+    );
+  })}
+</div>
                     type="date"
                     value={newDueDate}
                     onChange={(e) => setNewDueDate(e.target.value)}
