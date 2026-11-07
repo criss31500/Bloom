@@ -23,21 +23,41 @@ export default function TareasPage() {
           <p className="text-xs text-muted-foreground mt-2">Enfócate en lo principal de hoy ✨</p>
         </div>
 
-        {/* Card: Categorías */}
-        <div className="rounded-2xl border bg-card p-5 shadow-sm space-y-2">
-          <h2 className="font-semibold text-sm text-muted-foreground mb-3">Categorías</h2>
-          <div className="flex flex-wrap gap-2">
-            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
-              <Briefcase className="size-3.5" /> Trabajo
-            </span>
-            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300">
-              <BookOpen className="size-3.5" /> Estudio
-            </span>
-            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-pink-100 text-pink-700 dark:bg-pink-950/60 dark:text-pink-300">
-              <Home className="size-3.5" /> Casa / Personal
-            </span>
-          </div>
-        </div>
+        {/* Tarjetas individuales de Categorías */}
+<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+  {/* Tarjeta Trabajo */}
+  <div className="rounded-2xl border bg-card p-4 shadow-sm flex items-center gap-3">
+    <div className="p-2 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
+      <Briefcase className="size-5" />
+    </div>
+    <div>
+      <p className="text-xs text-muted-foreground">Categoría</p>
+      <p className="text-sm font-semibold">Trabajo</p>
+    </div>
+  </div>
+
+  {/* Tarjeta Estudio */}
+  <div className="rounded-2xl border bg-card p-4 shadow-sm flex items-center gap-3">
+    <div className="p-2 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400">
+      <BookOpen className="size-5" />
+    </div>
+    <div>
+      <p className="text-xs text-muted-foreground">Categoría</p>
+      <p className="text-sm font-semibold">Estudio</p>
+    </div>
+  </div>
+
+  {/* Tarjeta Personal */}
+  <div className="rounded-2xl border bg-card p-4 shadow-sm flex items-center gap-3">
+    <div className="p-2 rounded-xl bg-pink-500/10 text-pink-600 dark:text-pink-400">
+      <Home className="size-5" />
+    </div>
+    <div>
+      <p className="text-xs text-muted-foreground">Categoría</p>
+      <p className="text-sm font-semibold">Casa / Personal</p>
+    </div>
+  </div>
+</div>
 
         {/* Card: Progreso */}
         <div className="rounded-2xl border bg-card p-5 shadow-sm flex items-center justify-between">
