@@ -11,8 +11,8 @@ export default function TareasPage() {
         </button>
       </div>
 
-      {/* Bloque Superior: Del Día, Categorías y Progreso */}
-      <div className="grid gap-4 md:grid-cols-3">
+      {/* Bloque Superior: Del Día y Progreso */}
+      <div className="grid gap-4 md:grid-cols-2">
         {/* Card: Del Día */}
         <div className="rounded-2xl border bg-card p-5 shadow-sm border-blue-100 dark:border-blue-900/40">
           <div className="flex items-center gap-2 mb-3">
@@ -23,42 +23,6 @@ export default function TareasPage() {
           <p className="text-xs text-muted-foreground mt-2">Enfócate en lo principal de hoy ✨</p>
         </div>
 
-        {/* Tarjetas individuales de Categorías */}
-<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-  {/* Tarjeta Trabajo */}
-  <div className="rounded-2xl border bg-card p-4 shadow-sm flex items-center gap-3">
-    <div className="p-2 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
-      <Briefcase className="size-5" />
-    </div>
-    <div>
-      <p className="text-xs text-muted-foreground">Categoría</p>
-      <p className="text-sm font-semibold">Trabajo</p>
-    </div>
-  </div>
-
-  {/* Tarjeta Estudio */}
-  <div className="rounded-2xl border bg-card p-4 shadow-sm flex items-center gap-3">
-    <div className="p-2 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400">
-      <BookOpen className="size-5" />
-    </div>
-    <div>
-      <p className="text-xs text-muted-foreground">Categoría</p>
-      <p className="text-sm font-semibold">Estudio</p>
-    </div>
-  </div>
-
-  {/* Tarjeta Personal */}
-  <div className="rounded-2xl border bg-card p-4 shadow-sm flex items-center gap-3">
-    <div className="p-2 rounded-xl bg-pink-500/10 text-pink-600 dark:text-pink-400">
-      <Home className="size-5" />
-    </div>
-    <div>
-      <p className="text-xs text-muted-foreground">Categoría</p>
-      <p className="text-sm font-semibold">Casa / Personal</p>
-    </div>
-  </div>
-</div>
-
         {/* Card: Progreso */}
         <div className="rounded-2xl border bg-card p-5 shadow-sm flex items-center justify-between">
           <div>
@@ -68,6 +32,45 @@ export default function TareasPage() {
           </div>
           <div className="relative flex items-center justify-center size-16 rounded-full border-4 border-purple-200 border-t-purple-500 font-bold text-sm">
             75%
+          </div>
+        </div>
+      </div>
+
+      {/* Sección de Categorías en Fila Horizontal */}
+      <div>
+        <h2 className="text-sm font-semibold text-muted-foreground mb-3">Categorías</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Tarjeta Trabajo */}
+          <div className="rounded-2xl border bg-card p-4 shadow-sm flex items-center gap-3 hover:border-blue-500/50 transition">
+            <div className="p-2.5 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
+              <Briefcase className="size-5" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold">Trabajo</p>
+              <p className="text-xs text-muted-foreground">1 pendiente</p>
+            </div>
+          </div>
+
+          {/* Tarjeta Estudio */}
+          <div className="rounded-2xl border bg-card p-4 shadow-sm flex items-center gap-3 hover:border-purple-500/50 transition">
+            <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400">
+              <BookOpen className="size-5" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold">Estudio</p>
+              <p className="text-xs text-muted-foreground">1 pendiente</p>
+            </div>
+          </div>
+
+          {/* Tarjeta Personal */}
+          <div className="rounded-2xl border bg-card p-4 shadow-sm flex items-center gap-3 hover:border-pink-500/50 transition">
+            <div className="p-2.5 rounded-xl bg-pink-500/10 text-pink-600 dark:text-pink-400">
+              <Home className="size-5" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold">Casa / Personal</p>
+              <p className="text-xs text-muted-foreground">1 pendiente</p>
+            </div>
           </div>
         </div>
       </div>
