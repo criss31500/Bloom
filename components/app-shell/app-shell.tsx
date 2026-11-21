@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Flower } from 'lucide-react'
 import { SidebarNav } from '@/components/app-shell/sidebar-nav'
 import { MobileNav } from '@/components/app-shell/mobile-nav'
@@ -5,12 +6,15 @@ import { ThemeToggle } from '@/components/app-shell/theme-toggle'
 
 function Brand() {
   return (
-    <div className="flex items-center gap-2.5">
+    <Link
+      href="/inicio"
+      className="flex items-center gap-2.5 rounded-lg transition-opacity hover:opacity-85"
+    >
       <span className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
         <Flower className="size-5" aria-hidden="true" />
       </span>
       <span className="text-base font-semibold tracking-tight">Bloom</span>
-    </div>
+    </Link>
   )
 }
 
